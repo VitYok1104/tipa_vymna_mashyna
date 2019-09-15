@@ -1,7 +1,7 @@
 import random as rd
 
 w1 = rd.random()
-w2= rd.random()
+w2 = rd.random()
 w3 = rd.random() 
 
 # порогове значення
@@ -72,29 +72,32 @@ def repeat():
     inaf = 0
     while rep <= 20 :
         if X [3][b] != X [4][b] :                                                                                      #співставлення 2 масивів
-            print('не сходиться '+ str(b))               
+            #print('не сходиться '+ str(b))               
             modification(b)
             rep +=1
             
         else:
             break
-    print(rep)
+   # print(rep)
     print(str(X [4][:]) + '  навчання')
     print(str(X [3][:]) + '  еталон')
 
 
 #зміна вагових коефіцієнтів
 def modification(b):
-    print(b)
+    #print(b)
     a = X [0][b] * w1 + ny2 * X [0][b] * (X [3][b] - X [4][b])
     +    X [1][b] * w2 + ny2 * X [1][b] * (X [3][b] - X [4][b])
     +    X [2][b] * w3 + ny2 * X [2][b] * (X [3][b] - X [4][b])
-    print(a)
-    out_Y(a, b) 
+    #print(a)
+    out_Y(a, b)                                         #перевірка чи це 0 чи 1 і запис її в строку навчання
 '''
 0*rand + 0.1 * 0 *(0-1)
 '''
     
 logic_operation_T(X)
 neyro_Y()
-repeat()
+
+
+for i in range(10):
+    repeat()
