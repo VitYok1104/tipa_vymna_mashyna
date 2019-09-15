@@ -1,29 +1,35 @@
-import random
+import random as rd
+
+w1 = rd.random()
+w2= rd.random()
+w3 = rd.random() 
+
 # порогове значення
 thersold = .5
 #print('порогове значення : ' + str(thersold))
 
 #значення коефіцєнта ню
-w1 = .05
-w2 = .1
-w3 = .3
+ny1 = .05
+ny2 = .1
+ny3 = .3
 #print('вагові коефіцієнти : ' + str(w1) + '  ' + str(w2) + '  ' + str(w3))
 
 #Матриця всього
 X =        [ [0, 0, 0, 0, 1, 1, 1, 1],   #поле початкової матриці
                 [0, 0, 1, 1, 0, 0, 1, 1],   #поле початкової матриці
                 [0, 1, 0, 1, 0, 1, 0, 1],   #поле початкової матриці
-                [0, 0, 0, 0, 0, 0, 0, 0],   #поле істинності
-                [0, 0, 0, 0, 0, 0, 0, 0]]   #поле суми добутків
+                [0, 0, 0, 0, 0, 0, 0, 0],   #поле істинності                        T
+                [0, 0, 0, 0, 0, 0, 0, 0]]   #поле суми добутків                 Y
 #print('матриця на6ору вхідних даних : ' + str(X[:][:3]))
 
 #перевірка порогового значення(виклик в функції розрахунку суми добутків)
 def out_Y(a, b):
     if a > thersold:
-        Y = 1
         X [4][b] = 1
+    else:
+        X [4][b] = 0
 
-def logic_operation(X):
+def logic_operation_T(X):
     '''імплікація -->
        if елемент 1 множини = 1, а 2 = 0 то значення = 0
        У всіх інших випадках значення = 1'''
@@ -34,7 +40,6 @@ def logic_operation(X):
         else:
             X [1][с] = 1
         с += 1
-#    print(X [1][:])
     '''диз'юнкція \/
       if хоч 1 елемент з двох множин = 1, то 1
       if обидва елементи = 0. то 0'''
@@ -51,16 +56,45 @@ def logic_operation(X):
 #    print('таблиця істинності : '+ str(X [3][:]))
 
 #розрахунок суми добутків (а)
-def sum_():
+def neyro_Y():
     a = 0
     b = 0
-    for summ in range(8):
-        a = X [0][b] * random.random() + X [1][b] * random.random() + X [2][b] * random.random()
+    for element in range(8):
+        a = X [0][b] * w1+ X [1][b] * w2 + X [2][b] * w3
         out_Y(a, b)
         b += 1
- #       print(a)
+#        print(a)
 
-        
-logic_operation(X)
-sum_()
-print(X [4][:])
+#перевірка на відповідність
+def repeat():
+    rep = 0
+    b = 0
+    inaf = 0
+    while rep <= 20 :
+        if X [3][b] != X [4][b] :                                                                                      #співставлення 2 масивів
+            print('не сходиться '+ str(b))               
+            modification(b)
+            rep +=1
+            
+        else:
+            break
+    print(rep)
+    print(str(X [4][:]) + '  навчання')
+    print(str(X [3][:]) + '  еталон')
+
+
+#зміна вагових коефіцієнтів
+def modification(b):
+    print(b)
+    a = X [0][b] * w1 + ny2 * X [0][b] * (X [3][b] - X [4][b])
+    +    X [1][b] * w2 + ny2 * X [1][b] * (X [3][b] - X [4][b])
+    +    X [2][b] * w3 + ny2 * X [2][b] * (X [3][b] - X [4][b])
+    print(a)
+    out_Y(a, b) 
+'''
+0*rand + 0.1 * 0 *(0-1)
+'''
+    
+logic_operation_T(X)
+neyro_Y()
+repeat()
