@@ -1,8 +1,5 @@
 import random as rd
 
-w1 = rd.random()
-w2 = rd.random()
-w3 = rd.random() 
 
 # порогове значення
 thersold = .5
@@ -11,7 +8,7 @@ thersold = .5
 #значення коефіцєнта ню
 ny1 = .05
 ny2 = .1
-ny3 = .3
+ny3 = .00003
 #print('вагові коефіцієнти : ' + str(w1) + '  ' + str(w2) + '  ' + str(w3))
 
 #Матриця всього
@@ -22,12 +19,14 @@ X =        [ [0, 0, 0, 0, 1, 1, 1, 1],   #поле початкової матр
                 [0, 0, 0, 0, 0, 0, 0, 0]]   #поле суми добутків                 Y
 #print('матриця на6ору вхідних даних : ' + str(X[:][:3]))
 
-#перевірка порогового значення(виклик в функції розрахунку суми добутків)
-def out_Y(a, b):
+
+#перевірка порогового значення
+def out_Y(a, b, c):                     
     if a > thersold:
-        X [4][b] = 1
+        X [c][b] = 1
     else:
-        X [4][b] = 0
+        X [c][b] = 0
+
 
 def logic_operation_T(X):
     '''імплікація -->
@@ -56,48 +55,46 @@ def logic_operation_T(X):
 #    print('таблиця істинності : '+ str(X [3][:]))
 
 #розрахунок суми добутків (а)
-def neyro_Y():
+def neyro_Y(w1, w2, w3):
     a = 0
     b = 0
+    c = 4  #запис в поле значень Y
     for element in range(8):
         a = X [0][b] * w1+ X [1][b] * w2 + X [2][b] * w3
-        out_Y(a, b)
+        out_Y(a, b, c)
         b += 1
-#        print(a)
+        #print(a)
 
-#перевірка на відповідність
+#головна функція
 def repeat():
-    rep = 0
-    b = 0
-    inaf = 0
-    while rep <= 20 :
-        if X [3][b] != X [4][b] :                                                                                      #співставлення 2 масивів
-            #print('не сходиться '+ str(b))               
-            modification(b)
-            rep +=1
-            
-        else:
+    #рандомні вагові коефіцієнти
+    w1 = rd.random()
+    w2 = rd.random()
+    w3 = rd.random() 
+
+    logic_operation_T(X)
+    neyro_Y(w1, w2, w3)
+    int = c = 4
+    print(str(X [4][:]) + '  чекає обробки')
+    print(str(X [3][:]) + '  еталон' + '\n')
+    n = 1000000
+    i = 0
+    while i < n:
+
+        b = 0
+        for check in range(8):
+            if X [3][b] != X [4][b] :                                            #порівння 2 строк
+                w1 += ny1 * X [0][b] * (X [3][b] - X [4][b])
+                w2 += ny1 * X [1][b] * (X [3][b] - X [4][b])
+                w3 += ny1 * X [2][b] * (X [3][b] - X [4][b])
+                neyro_Y(w1, w2, w3)                                           #перерахунок і перезапис нових даних
+            b += 1
+        if X [3][:] == X [4][:] :
             break
-   # print(rep)
-    print(str(X [4][:]) + '  навчання')
-    print(str(X [3][:]) + '  еталон')
+        else:
+            i += 1
+        print(i)
 
-
-#зміна вагових коефіцієнтів
-def modification(b):
-    #print(b)
-    a = X [0][b] * w1 + ny2 * X [0][b] * (X [3][b] - X [4][b])
-    +    X [1][b] * w2 + ny2 * X [1][b] * (X [3][b] - X [4][b])
-    +    X [2][b] * w3 + ny2 * X [2][b] * (X [3][b] - X [4][b])
-    #print(a)
-    out_Y(a, b)                                         #перевірка чи це 0 чи 1 і запис її в строку навчання
-'''
-0*rand + 0.1 * 0 *(0-1)
-'''
-    
-logic_operation_T(X)
-neyro_Y()
-
-
-for i in range(10):
-    repeat()
+repeat()
+print(str(X [4][:]) + '  оброблене')
+print(str(X [3][:]) + '  еталон')
