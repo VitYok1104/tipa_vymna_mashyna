@@ -70,17 +70,18 @@ def repeat():
     #рандомні вагові коефіцієнти
     w1 = rd.random()
     w2 = rd.random()
-    w3 = rd.random() 
+    w3 = rd.random()
+
+    n = 1000000
+    step = 0
 
     logic_operation_T(X)
     neyro_Y(w1, w2, w3)
-    int = c = 4
+    
     print(str(X [4][:]) + '  чекає обробки')
     print(str(X [3][:]) + '  еталон' + '\n')
-    n = 1000000
-    i = 0
-    while i < n:
-
+    
+    while step < n :
         b = 0
         for check in range(8):
             if X [3][b] != X [4][b] :                                            #порівння 2 строк
@@ -89,11 +90,12 @@ def repeat():
                 w3 += ny1 * X [2][b] * (X [3][b] - X [4][b])
                 neyro_Y(w1, w2, w3)                                           #перерахунок і перезапис нових даних
             b += 1
+        #первірка схожості. if співпали то завершення, ні - +1 крок  до циклу
         if X [3][:] == X [4][:] :
             break
         else:
-            i += 1
-        print(i)
+            step += 1
+        print(step)
 
 repeat()
 print(str(X [4][:]) + '  оброблене')
